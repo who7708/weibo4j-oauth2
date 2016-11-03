@@ -41,97 +41,100 @@ import weibo4j.org.json.JSONObject;
  * @editor SinaWeibo
  */
 public class IDs extends WeiboResponse {
-    private long[] ids;           //ids
-    private long previousCursor;  //当前cursor
-    private long nextCursor;      //下一个cursor
-    private static final long serialVersionUID = -6585026560164704953L;
-    /*package*/ IDs(Response res,Weibo w) throws WeiboException {
-        super(res);
-        if("[]\n".equals(res.asString())){
-        	previousCursor=0;
-        	nextCursor=0;
-        	ids= new long[0];
-        	return;
-        }
-        JSONObject json=  res.asJSONObject();
-        try {
-        	previousCursor = json.getLong("previous_cursor");
-            nextCursor = json.getLong("next_cursor");
-        	
-            if(!json.isNull("ids")){
-        		JSONArray jsona= json.getJSONArray("ids");
-        		int size=jsona.length();
-        		ids =new long[ size];
-        		for (int i = 0; i < size; i++) {
-        			ids[i] =jsona.getLong(i);
+	private long[] ids; // ids
+	private long previousCursor; // 当前cursor
+	private long nextCursor; // 下一个cursor
+	private static final long serialVersionUID = -6585026560164704953L;
+
+	/* package */ IDs(Response res, Weibo w) throws WeiboException {
+		super(res);
+		if ("[]\n".equals(res.asString())) {
+			previousCursor = 0;
+			nextCursor = 0;
+			ids = new long[0];
+			return;
+		}
+		JSONObject json = res.asJSONObject();
+		try {
+			previousCursor = json.getLong("previous_cursor");
+			nextCursor = json.getLong("next_cursor");
+
+			if (!json.isNull("ids")) {
+				JSONArray jsona = json.getJSONArray("ids");
+				int size = jsona.length();
+				ids = new long[size];
+				for (int i = 0; i < size; i++) {
+					ids[i] = jsona.getLong(i);
 				}
-        	}
-        	
-         } catch (JSONException jsone) {
-             throw new WeiboException(jsone);
-         } 
-        
-    }
+			}
 
-    public long[] getIDs() {
-        return ids;
-    }
+		} catch (JSONException jsone) {
+			throw new WeiboException(jsone);
+		}
 
-    /**
-     *
-     * @since weibo4j-V2 1.0.0
-     */
-    public boolean hasPrevious(){
-        return 0 != previousCursor;
-    }
+	}
 
-    /**
-     *
-     * @since weibo4j-V2 1.0.0
-     */
-    public long getPreviousCursor() {
-        return previousCursor;
-    }
+	public long[] getIDs() {
+		return ids;
+	}
 
-    /**
-     *
-     * @since weibo4j-V2 1.0.0
-     */
-    public boolean hasNext(){
-        return 0 != nextCursor;
-    }
+	/**
+	 *
+	 * @since weibo4j-V2 1.0.0
+	 */
+	public boolean hasPrevious() {
+		return 0 != previousCursor;
+	}
 
-    /**
-     *
-     * @since weibo4j-V2 1.0.0
-     */
-    public long getNextCursor() {
-        return nextCursor;
-    }
+	/**
+	 *
+	 * @since weibo4j-V2 1.0.0
+	 */
+	public long getPreviousCursor() {
+		return previousCursor;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof IDs)) return false;
+	/**
+	 *
+	 * @since weibo4j-V2 1.0.0
+	 */
+	public boolean hasNext() {
+		return 0 != nextCursor;
+	}
 
-        IDs iDs = (IDs) o;
+	/**
+	 *
+	 * @since weibo4j-V2 1.0.0
+	 */
+	public long getNextCursor() {
+		return nextCursor;
+	}
 
-        if (!Arrays.equals(ids, iDs.ids)) return false;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof IDs)) {
+			return false;
+		}
 
-        return true;
-    }
+		IDs iDs = (IDs) o;
 
-    @Override
-    public int hashCode() {
-        return ids != null ? Arrays.hashCode(ids) : 0;
-    }
+		if (!Arrays.equals(ids, iDs.ids)) {
+			return false;
+		}
 
-    @Override
-    public String toString() {
-        return "IDs{" +
-                "ids=" + ids +
-                ", previousCursor=" + previousCursor +
-                ", nextCursor=" + nextCursor +
-                '}';
-    }
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		return ids != null ? Arrays.hashCode(ids) : 0;
+	}
+
+	@Override
+	public String toString() {
+		return "IDs{" + "ids=" + ids + ", previousCursor=" + previousCursor + ", nextCursor=" + nextCursor + '}';
+	}
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * 对User对象列表进行的包装，以支持cursor相关信息传递
+ * 
  * @author sinaWeibo
  */
 public class UserWapper implements Serializable {
@@ -29,16 +30,16 @@ public class UserWapper implements Serializable {
 	 * 向后翻页的cursor
 	 */
 	private long nextCursor;
-	
+
 	private long totalNumber;
-	
+
 	private String hasvisible;
 
-	public UserWapper(List<User> users, long previousCursor, long nextCursor, long totalNumber,String hasvisible) {
+	public UserWapper(List<User> users, long previousCursor, long nextCursor, long totalNumber, String hasvisible) {
 		this.users = users;
 		this.previousCursor = previousCursor;
 		this.nextCursor = nextCursor;
-		this.totalNumber=totalNumber;
+		this.totalNumber = totalNumber;
 		this.hasvisible = hasvisible;
 	}
 

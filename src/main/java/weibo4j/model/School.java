@@ -21,8 +21,7 @@ public class School extends WeiboResponse {
 			id = json.getInt("id");
 			name = json.getString("name");
 		} catch (JSONException je) {
-			throw new WeiboException(je.getMessage() + ":" + json.toString(),
-					je);
+			throw new WeiboException(je.getMessage() + ":" + json.toString(), je);
 		}
 	}
 
@@ -31,8 +30,7 @@ public class School extends WeiboResponse {
 			id = json.getInt("id");
 			name = json.getString("name");
 		} catch (JSONException je) {
-			throw new WeiboException(je.getMessage() + ":" + json.toString(),
-					je);
+			throw new WeiboException(je.getMessage() + ":" + json.toString(), je);
 		}
 	}
 
@@ -71,15 +69,19 @@ public class School extends WeiboResponse {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		School other = (School) obj;
-		if (id != other.id)
+		if (id != other.id) {
 			return false;
+		}
 		return true;
 	}
 

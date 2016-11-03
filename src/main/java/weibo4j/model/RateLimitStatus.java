@@ -28,13 +28,13 @@ package weibo4j.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import weibo4j.http.Response;
 import weibo4j.org.json.JSONArray;
 import weibo4j.org.json.JSONException;
 import weibo4j.org.json.JSONObject;
 
-public class RateLimitStatus extends WeiboResponse implements
-		java.io.Serializable {
+public class RateLimitStatus extends WeiboResponse implements java.io.Serializable {
 
 	private static final long serialVersionUID = -3153374766679996576L;
 
@@ -63,8 +63,7 @@ public class RateLimitStatus extends WeiboResponse implements
 			resetTimeInSeconds = json.getInt("reset_time_in_seconds");
 			userLimit = json.getLong("user_limit");
 		} catch (JSONException jsone) {
-			throw new WeiboException(
-					jsone.getMessage() + ":" + json.toString(), jsone);
+			throw new WeiboException(jsone.getMessage() + ":" + json.toString(), jsone);
 		}
 	}
 
@@ -126,11 +125,9 @@ public class RateLimitStatus extends WeiboResponse implements
 
 	@Override
 	public String toString() {
-		return "RateLimitStatus [ipLimit=" + ipLimit + ", remainingIpHits="
-				+ remainingIpHits + ", remainingUserHits=" + remainingUserHits
-				+ ", resetTime=" + resetTime + ", resetTimeInSeconds="
-				+ resetTimeInSeconds + ", userLimit=" + userLimit
-				+ ", apiRateLimit=" + apiRateLimit + "]";
+		return "RateLimitStatus [ipLimit=" + ipLimit + ", remainingIpHits=" + remainingIpHits + ", remainingUserHits="
+				+ remainingUserHits + ", resetTime=" + resetTime + ", resetTimeInSeconds=" + resetTimeInSeconds
+				+ ", userLimit=" + userLimit + ", apiRateLimit=" + apiRateLimit + "]";
 	}
 
 }

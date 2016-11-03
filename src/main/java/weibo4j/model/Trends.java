@@ -26,21 +26,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package weibo4j.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
 import weibo4j.http.Response;
 import weibo4j.org.json.JSONArray;
 import weibo4j.org.json.JSONException;
 import weibo4j.org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Collections;
-import java.util.Arrays;
-
 /**
  * A data class representing Treands.
- * 
+ *
  * @author Yusuke Yamamoto - yusuke at mac.com
  * @since weibo4j-V2 1.0.1
  */
@@ -50,12 +50,12 @@ public class Trends extends WeiboResponse implements Comparable<Trends> {
 	private Trend[] trends; // 话题对象
 	private static final long serialVersionUID = -7151479143843312309L;
 
+	@Override
 	public int compareTo(Trends that) {
 		return this.trendAt.compareTo(that.trendAt);
 	}
 
-	/* package */Trends(Response res, Date asOf, Date trendAt, Trend[] trends)
-			throws WeiboException {
+	/* package */ Trends(Response res, Date asOf, Date trendAt, Trend[] trends) throws WeiboException {
 		super(res);
 		this.asOf = asOf;
 		this.trendAt = trendAt;
@@ -63,8 +63,7 @@ public class Trends extends WeiboResponse implements Comparable<Trends> {
 	}
 
 	/* package */
-	public static List<Trends> constructTrendsList(Response res)
-			throws WeiboException {
+	public static List<Trends> constructTrendsList(Response res) throws WeiboException {
 		JSONObject json = res.asJSONObject();
 		List<Trends> trends;
 		try {
@@ -78,23 +77,19 @@ public class Trends extends WeiboResponse implements Comparable<Trends> {
 				Trend[] trendsArray = jsonArrayToTrendArray(array);
 				if (key.length() == 19) {
 					// current trends
-					trends.add(new Trends(res, asOf, parseDate(key,
-							"yyyy-MM-dd HH:mm:ss"), trendsArray));
+					trends.add(new Trends(res, asOf, parseDate(key, "yyyy-MM-dd HH:mm:ss"), trendsArray));
 				} else if (key.length() == 16) {
 					// daily trends
-					trends.add(new Trends(res, asOf, parseDate(key,
-							"yyyy-MM-dd HH:mm"), trendsArray));
+					trends.add(new Trends(res, asOf, parseDate(key, "yyyy-MM-dd HH:mm"), trendsArray));
 				} else if (key.length() == 10) {
 					// weekly trends
-					trends.add(new Trends(res, asOf, parseDate(key,
-							"yyyy-MM-dd"), trendsArray));
+					trends.add(new Trends(res, asOf, parseDate(key, "yyyy-MM-dd"), trendsArray));
 				}
 			}
 			Collections.sort(trends);
 			return trends;
 		} catch (JSONException jsone) {
-			throw new WeiboException(jsone.getMessage() + ":" + res.asString(),
-					jsone);
+			throw new WeiboException(jsone.getMessage() + ":" + res.asString(), jsone);
 		}
 	}
 
@@ -107,8 +102,7 @@ public class Trends extends WeiboResponse implements Comparable<Trends> {
 			Trend[] trendsArray = jsonArrayToTrendArray(array);
 			return new Trends(res, asOf, asOf, trendsArray);
 		} catch (JSONException jsone) {
-			throw new WeiboException(jsone.getMessage() + ":" + res.asString(),
-					jsone);
+			throw new WeiboException(jsone.getMessage() + ":" + res.asString(), jsone);
 		}
 	}
 
@@ -117,14 +111,12 @@ public class Trends extends WeiboResponse implements Comparable<Trends> {
 		if (asOfStr.length() == 10) {
 			parsed = new Date(Long.parseLong(asOfStr) * 1000);
 		} else {
-			parsed = WeiboResponse.parseDate(asOfStr,
-					"EEE, d MMM yyyy HH:mm:ss z");
+			parsed = WeiboResponse.parseDate(asOfStr, "EEE, d MMM yyyy HH:mm:ss z");
 		}
 		return parsed;
 	}
 
-	private static Trend[] jsonArrayToTrendArray(JSONArray array)
-			throws JSONException {
+	private static Trend[] jsonArrayToTrendArray(JSONArray array) throws JSONException {
 		Trend[] trends = new Trend[array.length()];
 		for (int i = 0; i < array.length(); i++) {
 			JSONObject trend = array.getJSONObject(i);
@@ -147,20 +139,24 @@ public class Trends extends WeiboResponse implements Comparable<Trends> {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o)
+		if (this == o) {
 			return true;
-		if (!(o instanceof Trends))
+		}
+		if (!(o instanceof Trends)) {
 			return false;
+		}
 
 		Trends trends1 = (Trends) o;
 
-		if (asOf != null ? !asOf.equals(trends1.asOf) : trends1.asOf != null)
+		if (asOf != null ? !asOf.equals(trends1.asOf) : trends1.asOf != null) {
 			return false;
-		if (trendAt != null ? !trendAt.equals(trends1.trendAt)
-				: trends1.trendAt != null)
+		}
+		if (trendAt != null ? !trendAt.equals(trends1.trendAt) : trends1.trendAt != null) {
 			return false;
-		if (!Arrays.equals(trends, trends1.trends))
+		}
+		if (!Arrays.equals(trends, trends1.trends)) {
 			return false;
+		}
 
 		return true;
 	}
@@ -175,8 +171,7 @@ public class Trends extends WeiboResponse implements Comparable<Trends> {
 
 	@Override
 	public String toString() {
-		return "Trends{" + "asOf=" + asOf + ", trendAt=" + trendAt
-				+ ", trends=" + (trends == null ? null : Arrays.asList(trends))
-				+ '}';
+		return "Trends{" + "asOf=" + asOf + ", trendAt=" + trendAt + ", trends="
+				+ (trends == null ? null : Arrays.asList(trends)) + '}';
 	}
 }

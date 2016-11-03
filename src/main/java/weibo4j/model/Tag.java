@@ -3,6 +3,7 @@ package weibo4j.model;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import weibo4j.Weibo;
 import weibo4j.http.Response;
 import weibo4j.org.json.JSONArray;
@@ -11,40 +12,40 @@ import weibo4j.org.json.JSONObject;
 
 /**
  * @author sinaWeibo
- * 
+ *
  */
 public class Tag extends WeiboResponse implements java.io.Serializable {
 
 	private static final long serialVersionUID = 2177657076940291492L;
 
-	private String id;           //标签id
+	private String id; // 标签id
 
-	private String value;        //标签value
-	
+	private String value; // 标签value
+
 	private String weight;
 
-	public Tag(JSONObject json) throws WeiboException, JSONException {			
-			if (!json.getString("id").isEmpty()) {
-				id = json.getString("id"); 
+	public Tag(JSONObject json) throws WeiboException, JSONException {
+		if (!json.getString("id").isEmpty()) {
+			id = json.getString("id");
+		}
+		if (!json.getString("value").isEmpty()) {
+			value = json.getString("value");
+		} else {
+			Iterator<String> keys = json.sortedKeys();
+			if (keys.hasNext()) {
+				id = keys.next();
+				value = json.getString(id);
 			}
-			if(!json.getString("value").isEmpty()) {
-				value = json.getString("value");
-			}else {
-				Iterator<String> keys = json.sortedKeys();
-				if (keys.hasNext()) {
-					id = keys.next();
-					value = json.getString(id);	
-				}
-			}
-			weight= json.getString("weight");
+		}
+		weight = json.getString("weight");
 	}
-	public Tag(JSONObject json , Weibo weibo) throws WeiboException,JSONException {
+
+	public Tag(JSONObject json, Weibo weibo) throws WeiboException, JSONException {
 		System.out.println(json);
 		id = json.getString("id");
 		value = json.getString("count");
-		weight= json.getString("weight");
+		weight = json.getString("weight");
 	}
-
 
 	public static List<Tag> constructTags(Response res) throws WeiboException {
 		try {
@@ -61,11 +62,12 @@ public class Tag extends WeiboResponse implements java.io.Serializable {
 			throw te;
 		}
 	}
-	public static TagWapper constructTagWapper(Response res){
+
+	public static TagWapper constructTagWapper(Response res) {
 		try {
 			JSONArray tags = res.asJSONArray();
 			List<Tag> tagList = new ArrayList<Tag>();
-			for(int i=0;i<tags.getJSONObject(0).getJSONArray("tags").length();i++){
+			for (int i = 0; i < tags.getJSONObject(0).getJSONArray("tags").length(); i++) {
 				tagList.add(new Tag(tags.getJSONObject(0).getJSONArray("tags").getJSONObject(i)));
 			}
 			String id = tags.getJSONObject(0).getString("id");
@@ -77,6 +79,7 @@ public class Tag extends WeiboResponse implements java.io.Serializable {
 		}
 		return null;
 	}
+
 	public static List<FavoritesTag> constructTag(Response res) throws WeiboException {
 		try {
 			JSONArray list = res.asJSONObject().getJSONArray("tags");
@@ -104,23 +107,30 @@ public class Tag extends WeiboResponse implements java.io.Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		Tag other = (Tag) obj;
 		if (id == null) {
-			if (other.id != null)
+			if (other.id != null) {
 				return false;
-		} else if (!id.equals(other.id))
+			}
+		} else if (!id.equals(other.id)) {
 			return false;
+		}
 		if (value == null) {
-			if (other.value != null)
+			if (other.value != null) {
 				return false;
-		} else if (!value.equals(other.value))
+			}
+		} else if (!value.equals(other.value)) {
 			return false;
+		}
 		return true;
 	}
 
@@ -134,25 +144,29 @@ public class Tag extends WeiboResponse implements java.io.Serializable {
 	public String getWeight() {
 		return weight;
 	}
+
 	public void setWeight(String weight) {
 		this.weight = weight;
 	}
+
 	public void setId(String id) {
 		this.id = id;
 	}
+
 	public void setValue(String value) {
 		this.value = value;
 	}
+
 	/**
 	 * @return the value
 	 */
 	public String getValue() {
 		return value;
 	}
+
 	@Override
 	public String toString() {
-		return "Tag [id=" + id + ", value=" + value + ", weight=" + weight
-				+ "]";
+		return "Tag [id=" + id + ", value=" + value + ", weight=" + weight + "]";
 	}
 
 }

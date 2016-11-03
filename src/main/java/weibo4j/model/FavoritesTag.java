@@ -10,28 +10,26 @@ import weibo4j.org.json.JSONObject;
 
 /**
  * @author sinaWeibo
- * 
+ *
  */
 public class FavoritesTag extends WeiboResponse implements java.io.Serializable {
 
 	private static final long serialVersionUID = 2177657076940291492L;
 
-	private String id;           //标签id
+	private String id; // 标签id
 
-	private String tag;          //标签
+	private String tag; // 标签
 
-	private int count;           //该标签下收藏的微博数
+	private int count; // 该标签下收藏的微博数
 
-	public FavoritesTag(JSONObject json) throws WeiboException,JSONException {
+	public FavoritesTag(JSONObject json) throws WeiboException, JSONException {
 		id = json.getString("id");
 		tag = json.getString("tag");
-		if(!json.isNull("count"))
-		{
+		if (!json.isNull("count")) {
 			count = json.getInt("count");
 		}
 
 	}
-
 
 	public static List<FavoritesTag> constructTags(Response res) throws WeiboException {
 		try {
@@ -48,6 +46,7 @@ public class FavoritesTag extends WeiboResponse implements java.io.Serializable 
 			throw te;
 		}
 	}
+
 	public static List<FavoritesTag> constructTag(Response res) throws WeiboException {
 		try {
 			JSONArray list = res.asJSONObject().getJSONArray("tags");
@@ -64,8 +63,6 @@ public class FavoritesTag extends WeiboResponse implements java.io.Serializable 
 		}
 	}
 
-
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -74,59 +71,55 @@ public class FavoritesTag extends WeiboResponse implements java.io.Serializable 
 		return result;
 	}
 
-
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		FavoritesTag other = (FavoritesTag) obj;
 		if (id == null) {
-			if (other.id != null)
+			if (other.id != null) {
 				return false;
-		} else if (!id.equals(other.id))
+			}
+		} else if (!id.equals(other.id)) {
 			return false;
+		}
 		return true;
 	}
-
 
 	public String getId() {
 		return id;
 	}
 
-
 	public void setId(String id) {
 		this.id = id;
 	}
-
 
 	public String getTag() {
 		return tag;
 	}
 
-
 	public void setTag(String tag) {
 		this.tag = tag;
 	}
-
 
 	public int getCount() {
 		return count;
 	}
 
-
 	public void setCount(int count) {
 		this.count = count;
 	}
 
-
 	@Override
 	public String toString() {
-		return "FavoritesTag [id=" + id + ", tag=" + tag + ", count=" + count
-		+ "]";
+		return "FavoritesTag [id=" + id + ", tag=" + tag + ", count=" + count + "]";
 	}
 
 }

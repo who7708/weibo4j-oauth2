@@ -16,9 +16,9 @@ import weibo4j.org.json.JSONException;
 import weibo4j.org.json.JSONObject;
 import weibo4j.util.WeiboConfig;
 
-public class Oauth extends Weibo{
+public class Oauth extends Weibo {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 7003420545330439247L;
 	// ----------------------------针对站内应用处理SignedRequest获取accesstoken----------------------------------------
@@ -32,18 +32,18 @@ public class Oauth extends Weibo{
 	/*
 	 * 解析站内应用post的SignedRequest split为part1和part2两部分
 	 */
-	public String parseSignedRequest(String signed_request) throws IOException,
-			InvalidKeyException, NoSuchAlgorithmException {
+	public String parseSignedRequest(String signed_request)
+			throws IOException, InvalidKeyException, NoSuchAlgorithmException {
 		String[] t = signed_request.split("\\.", 2);
 		// 为了和 url encode/decode 不冲突，base64url 编码方式会将
 		// '+'，'/'转换成'-'，'_'，并且去掉结尾的'='。 因此解码之前需要还原到默认的base64编码，结尾的'='可以用以下算法还原
 		int padding = (4 - t[0].length() % 4);
-		for (int i = 0; i < padding; i++)
+		for (int i = 0; i < padding; i++) {
 			t[0] += "=";
+		}
 		String part1 = t[0].replace("-", "+").replace("_", "/");
 
-		SecretKey key = new SecretKeySpec(WeiboConfig
-				.getValue("client_SERCRET").getBytes(), "hmacSHA256");
+		SecretKey key = new SecretKeySpec(WeiboConfig.getValue("client_SERCRET").getBytes(), "hmacSHA256");
 		Mac m;
 		m = Mac.getInstance("hmacSHA256");
 		m.init(key);
@@ -77,23 +77,16 @@ public class Oauth extends Weibo{
 	/*----------------------------Oauth接口--------------------------------------*/
 
 	public AccessToken getAccessTokenByCode(String code) throws WeiboException {
-		return new AccessToken(client.post(
-				WeiboConfig.getValue("accessTokenURL"),
-				new PostParameter[] {
-						new PostParameter("client_id", WeiboConfig
-								.getValue("client_ID")),
-						new PostParameter("client_secret", WeiboConfig
-								.getValue("client_SERCRET")),
-						new PostParameter("grant_type", "authorization_code"),
-						new PostParameter("code", code),
-						new PostParameter("redirect_uri", WeiboConfig
-								.getValue("redirect_URI")) }, false));
+		return new AccessToken(client.post(WeiboConfig.getValue("accessTokenURL"),
+				new PostParameter[] { new PostParameter("client_id", WeiboConfig.getValue("client_ID")),
+						new PostParameter("client_secret", WeiboConfig.getValue("client_SERCRET")),
+						new PostParameter("grant_type", "authorization_code"), new PostParameter("code", code),
+						new PostParameter("redirect_uri", WeiboConfig.getValue("redirect_URI")) },
+				false));
 	}
 
 	public String authorize(String response_type) throws WeiboException {
-		return WeiboConfig.getValue("authorizeURL").trim() + "?client_id="
-				+ WeiboConfig.getValue("client_ID").trim() + "&redirect_uri="
-				+ WeiboConfig.getValue("redirect_URI").trim()
-				+ "&response_type=" + response_type;
+		return WeiboConfig.getValue("authorizeURL").trim() + "?client_id=" + WeiboConfig.getValue("client_ID").trim()
+				+ "&redirect_uri=" + WeiboConfig.getValue("redirect_URI").trim() + "&response_type=" + response_type;
 	}
 }

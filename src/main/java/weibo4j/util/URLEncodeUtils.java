@@ -1,11 +1,13 @@
 package weibo4j.util;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.BitSet;
+
 /**
  * @author sinaWeibo
- * 
+ *
  */
 public class URLEncodeUtils {
 
@@ -16,21 +18,21 @@ public class URLEncodeUtils {
 		/*
 		 * The list of characters that are not encoded has been determined as
 		 * follows:
-		 * 
+		 *
 		 * RFC 2396 states: ----- Data characters that are allowed in a URI but
 		 * do not have a reserved purpose are called unreserved. These include
 		 * upper and lower case letters, decimal digits, and a limited set of
 		 * punctuation marks and symbols.
-		 * 
+		 *
 		 * unreserved = alphanum | mark
-		 * 
+		 *
 		 * mark = "-" | "_" | "." | "!" | "~" | "*" | "'" | "(" | ")"
-		 * 
+		 *
 		 * Unreserved characters can be escaped without changing the semantics
 		 * of the URI, but this should not be done unless the URI is being used
 		 * in a context that does not allow the unescaped character to appear.
 		 * -----
-		 * 
+		 *
 		 * It appears that both Netscape and Internet Explorer escape all
 		 * special characters from this list with the exception of "-", "_",
 		 * ".", "*". While it is not clear why they are escaping the other
@@ -38,7 +40,7 @@ public class URLEncodeUtils {
 		 * contexts in which the others are unsafe if not escaped. Therefore, we
 		 * will use the same list. It is also noteworthy that this is consistent
 		 * with O'Reilly's "HTML: The Definitive Guide" (page 164).
-		 * 
+		 *
 		 * As a last note, Intenet Explorer does not encode the "@" character
 		 * which is clearly not unreserved according to the RFC. We are being
 		 * consistent with the RFC in this matter, as is Netscape.
@@ -71,12 +73,12 @@ public class URLEncodeUtils {
 
 	/**
 	 * 判断段落文本是否被urlencode过
-	 * 
+	 *
 	 * @param str
 	 * @return
 	 */
 	public static final boolean isURLEncoded(String str) {
-		if (str==null||"".equals(str)) {
+		if (str == null || "".equals(str)) {
 			return false;
 		}
 		char[] chars = str.toCharArray();
@@ -88,11 +90,11 @@ public class URLEncodeUtils {
 			if (!dontNeedEncoding.get(c)) {
 				return false;
 			}
-			if(c == '%'){
+			if (c == '%') {
 				containsPercent = true;
 			}
 		}
-		if(!containsPercent){
+		if (!containsPercent) {
 			return false;
 		}
 		return true;
@@ -105,6 +107,7 @@ public class URLEncodeUtils {
 			throw new RuntimeException(e);
 		}
 	}
+
 	public static final String decodeURL(String str) {
 		try {
 			return URLDecoder.decode(str, "utf-8");
@@ -112,5 +115,5 @@ public class URLEncodeUtils {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 }

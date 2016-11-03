@@ -8,7 +8,7 @@ public class Weibo implements java.io.Serializable {
 
 	public HttpClient client = new HttpClient();
 
-	public  void setToken(String token) {
+	public void setToken(String token) {
 		client.setToken(token);
 	}
 

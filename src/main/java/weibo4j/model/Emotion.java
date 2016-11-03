@@ -10,7 +10,7 @@ import weibo4j.org.json.JSONObject;
 
 /**
  * @author SinaWeibo
- * 
+ *
  */
 public class Emotion extends WeiboResponse {
 	private static final long serialVersionUID = -4096813631691846494L;
@@ -38,8 +38,7 @@ public class Emotion extends WeiboResponse {
 			picid = json.getString("picid");
 			icon = json.getString("icon");
 		} catch (JSONException je) {
-			throw new WeiboException(je.getMessage() + ":" + json.toString(),
-					je);
+			throw new WeiboException(je.getMessage() + ":" + json.toString(), je);
 		}
 	}
 
@@ -55,13 +54,11 @@ public class Emotion extends WeiboResponse {
 			picid = json.getString("picid");
 			icon = json.getString("icon");
 		} catch (JSONException je) {
-			throw new WeiboException(je.getMessage() + ":" + json.toString(),
-					je);
+			throw new WeiboException(je.getMessage() + ":" + json.toString(), je);
 		}
 	}
 
-	public static List<Emotion> constructEmotions(Response res)
-			throws WeiboException {
+	public static List<Emotion> constructEmotions(Response res) throws WeiboException {
 		try {
 			JSONArray list = res.asJSONArray();
 			int size = list.length();
@@ -156,10 +153,8 @@ public class Emotion extends WeiboResponse {
 
 	@Override
 	public String toString() {
-		return "Emotion [phrase=" + phrase + ", type=" + type + ", url=" + url
-				+ ", hot=" + hot + ", common=" + common + ", value=" + value
-				+ ", category=" + category + ", picid=" + picid + ", icon="
-				+ icon + "]";
+		return "Emotion [phrase=" + phrase + ", type=" + type + ", url=" + url + ", hot=" + hot + ", common=" + common
+				+ ", value=" + value + ", category=" + category + ", picid=" + picid + ", icon=" + icon + "]";
 	}
 
 }

@@ -8,13 +8,13 @@ public class CommentWapper {
 	private long previousCursor;
 
 	private long nextCursor;
-	
+
 	private long totalNumber;
-	
+
 	private String hasvisible;
-	
-	public CommentWapper(List<Comment> comments, long previousCursor,
-			long nextCursor, long totalNumber,String hasvisible) {
+
+	public CommentWapper(List<Comment> comments, long previousCursor, long nextCursor, long totalNumber,
+			String hasvisible) {
 		this.comments = comments;
 		this.previousCursor = previousCursor;
 		this.nextCursor = nextCursor;
@@ -61,5 +61,5 @@ public class CommentWapper {
 	public void setHasvisible(String hasvisible) {
 		this.hasvisible = hasvisible;
 	}
-		
+
 }

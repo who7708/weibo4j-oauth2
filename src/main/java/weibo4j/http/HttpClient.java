@@ -40,21 +40,54 @@ import weibo4j.org.json.JSONException;
 
 /**
  * @author sinaWeibo
- * 
+ *
  */
 public class HttpClient implements java.io.Serializable {
 
 	private static final long serialVersionUID = -176092625883595547L;
-	private static final int OK 				   = 200;						// OK: Success!
-	private static final int NOT_MODIFIED 		   = 304;			// Not Modified: There was no new data to return.
-	private static final int BAD_REQUEST 		   = 400;				// Bad Request: The request was invalid.  An accompanying error message will explain why. This is the status code will be returned during rate limiting.
-	private static final int NOT_AUTHORIZED 	   = 401;			// Not Authorized: Authentication credentials were missing or incorrect.
-	private static final int FORBIDDEN 			   = 403;				// Forbidden: The request is understood, but it has been refused.  An accompanying error message will explain why.
-	private static final int NOT_FOUND             = 404;				// Not Found: The URI requested is invalid or the resource requested, such as a user, does not exists.
-	private static final int NOT_ACCEPTABLE        = 406;		// Not Acceptable: Returned by the Search API when an invalid format is specified in the request.
-	private static final int INTERNAL_SERVER_ERROR = 500;// Internal Server Error: Something is broken.  Please post to the group so the Weibo team can investigate.
-	private static final int BAD_GATEWAY           = 502;// Bad Gateway: Weibo is down or being upgraded.
-	private static final int SERVICE_UNAVAILABLE   = 503;// Service Unavailable: The Weibo servers are up, but overloaded with requests. Try again later. The search and trend methods use this to indicate when you are being rate limited.
+	private static final int OK = 200; // OK: Success!
+	private static final int NOT_MODIFIED = 304; // Not Modified: There was no
+													// new data to return.
+	private static final int BAD_REQUEST = 400; // Bad Request: The request was
+												// invalid. An accompanying
+												// error message will explain
+												// why. This is the status code
+												// will be returned during rate
+												// limiting.
+	private static final int NOT_AUTHORIZED = 401; // Not Authorized:
+													// Authentication
+													// credentials were missing
+													// or incorrect.
+	private static final int FORBIDDEN = 403; // Forbidden: The request is
+												// understood, but it has been
+												// refused. An accompanying
+												// error message will explain
+												// why.
+	private static final int NOT_FOUND = 404; // Not Found: The URI requested is
+												// invalid or the resource
+												// requested, such as a user,
+												// does not exists.
+	private static final int NOT_ACCEPTABLE = 406; // Not Acceptable: Returned
+													// by the Search API when an
+													// invalid format is
+													// specified in the request.
+	private static final int INTERNAL_SERVER_ERROR = 500;// Internal Server
+															// Error: Something
+															// is broken. Please
+															// post to the group
+															// so the Weibo team
+															// can investigate.
+	private static final int BAD_GATEWAY = 502;// Bad Gateway: Weibo is down or
+												// being upgraded.
+	private static final int SERVICE_UNAVAILABLE = 503;// Service Unavailable:
+														// The Weibo servers are
+														// up, but overloaded
+														// with requests. Try
+														// again later. The
+														// search and trend
+														// methods use this to
+														// indicate when you are
+														// being rate limited.
 
 	private String proxyHost = Configuration.getProxyHost();
 	private int proxyPort = Configuration.getProxyPort();
@@ -69,7 +102,7 @@ public class HttpClient implements java.io.Serializable {
 	/**
 	 * Sets proxy host. System property -Dsinat4j.http.proxyHost or
 	 * http.proxyHost overrides this attribute.
-	 * 
+	 *
 	 * @param proxyHost
 	 */
 	public void setProxyHost(String proxyHost) {
@@ -83,7 +116,7 @@ public class HttpClient implements java.io.Serializable {
 	/**
 	 * Sets proxy port. System property -Dsinat4j.http.proxyPort or
 	 * -Dhttp.proxyPort overrides this attribute.
-	 * 
+	 *
 	 * @param proxyPort
 	 */
 	public void setProxyPort(int proxyPort) {
@@ -97,7 +130,7 @@ public class HttpClient implements java.io.Serializable {
 	/**
 	 * Sets proxy authentication user. System property -Dsinat4j.http.proxyUser
 	 * overrides this attribute.
-	 * 
+	 *
 	 * @param proxyAuthUser
 	 */
 	public void setProxyAuthUser(String proxyAuthUser) {
@@ -111,12 +144,11 @@ public class HttpClient implements java.io.Serializable {
 	/**
 	 * Sets proxy authentication password. System property
 	 * -Dsinat4j.http.proxyPassword overrides this attribute.
-	 * 
+	 *
 	 * @param proxyAuthPassword
 	 */
 	public void setProxyAuthPassword(String proxyAuthPassword) {
-		this.proxyAuthPassword = Configuration
-				.getProxyPassword(proxyAuthPassword);
+		this.proxyAuthPassword = Configuration.getProxyPassword(proxyAuthPassword);
 	}
 
 	public String setToken(String token) {
@@ -135,8 +167,7 @@ public class HttpClient implements java.io.Serializable {
 		this(150, 30000, 30000, 1024 * 1024);
 	}
 
-	public HttpClient(int maxConPerHost, int conTimeOutMs, int soTimeOutMs,
-			int maxSize) {
+	public HttpClient(int maxConPerHost, int conTimeOutMs, int soTimeOutMs, int maxSize) {
 		connectionManager = new MultiThreadedHttpConnectionManager();
 		HttpConnectionManagerParams params = connectionManager.getParams();
 		params.setDefaultMaxConnectionsPerHost(maxConPerHost);
@@ -146,8 +177,7 @@ public class HttpClient implements java.io.Serializable {
 		HttpClientParams clientParams = new HttpClientParams();
 		// 忽略cookie 避免 Cookie rejected 警告
 		clientParams.setCookiePolicy(CookiePolicy.IGNORE_COOKIES);
-		client = new org.apache.commons.httpclient.HttpClient(clientParams,
-				connectionManager);
+		client = new org.apache.commons.httpclient.HttpClient(clientParams, connectionManager);
 		Protocol myhttps = new Protocol("https", new MySSLSocketFactory(), 443);
 		Protocol.registerProtocol("https", myhttps);
 		this.maxSize = maxSize;
@@ -156,10 +186,8 @@ public class HttpClient implements java.io.Serializable {
 			client.getHostConfiguration().setProxy(proxyHost, proxyPort);
 			client.getParams().setAuthenticationPreemptive(true);
 			if (proxyAuthUser != null && !proxyAuthUser.equals("")) {
-				client.getState().setProxyCredentials(
-						AuthScope.ANY,
-						new UsernamePasswordCredentials(proxyAuthUser,
-								proxyAuthPassword));
+				client.getState().setProxyCredentials(AuthScope.ANY,
+						new UsernamePasswordCredentials(proxyAuthUser, proxyAuthPassword));
 				log("Proxy AuthUser: " + proxyAuthUser);
 				log("Proxy AuthPassword: " + proxyAuthPassword);
 			}
@@ -168,7 +196,7 @@ public class HttpClient implements java.io.Serializable {
 
 	/**
 	 * log调试
-	 * 
+	 *
 	 */
 	private static void log(String message) {
 		if (DEBUG) {
@@ -178,7 +206,7 @@ public class HttpClient implements java.io.Serializable {
 
 	/**
 	 * 处理http getmethod 请求
-	 * 
+	 *
 	 */
 
 	public Response get(String url) throws WeiboException {
@@ -187,8 +215,7 @@ public class HttpClient implements java.io.Serializable {
 
 	}
 
-	public Response get(String url, PostParameter[] params)
-			throws WeiboException {
+	public Response get(String url, PostParameter[] params) throws WeiboException {
 		log("Request:");
 		log("GET:" + url);
 		if (null != params && params.length > 0) {
@@ -204,45 +231,35 @@ public class HttpClient implements java.io.Serializable {
 
 	}
 
-	public Response get(String url, PostParameter[] params, Paging paging)
-			throws WeiboException {
+	public Response get(String url, PostParameter[] params, Paging paging) throws WeiboException {
 		if (null != paging) {
 			List<PostParameter> pagingParams = new ArrayList<PostParameter>(4);
 			if (-1 != paging.getMaxId()) {
-				pagingParams.add(new PostParameter("max_id", String
-						.valueOf(paging.getMaxId())));
+				pagingParams.add(new PostParameter("max_id", String.valueOf(paging.getMaxId())));
 			}
 			if (-1 != paging.getSinceId()) {
-				pagingParams.add(new PostParameter("since_id", String
-						.valueOf(paging.getSinceId())));
+				pagingParams.add(new PostParameter("since_id", String.valueOf(paging.getSinceId())));
 			}
 			if (-1 != paging.getPage()) {
-				pagingParams.add(new PostParameter("page", String
-						.valueOf(paging.getPage())));
+				pagingParams.add(new PostParameter("page", String.valueOf(paging.getPage())));
 			}
 			if (-1 != paging.getCount()) {
 				if (-1 != url.indexOf("search")) {
 					// search api takes "rpp"
-					pagingParams.add(new PostParameter("rpp", String
-							.valueOf(paging.getCount())));
+					pagingParams.add(new PostParameter("rpp", String.valueOf(paging.getCount())));
 				} else {
-					pagingParams.add(new PostParameter("count", String
-							.valueOf(paging.getCount())));
+					pagingParams.add(new PostParameter("count", String.valueOf(paging.getCount())));
 				}
 			}
 			PostParameter[] newparams = null;
-			PostParameter[] arrayPagingParams = pagingParams
-					.toArray(new PostParameter[pagingParams.size()]);
+			PostParameter[] arrayPagingParams = pagingParams.toArray(new PostParameter[pagingParams.size()]);
 			if (null != params) {
-				newparams = new PostParameter[params.length
-						+ pagingParams.size()];
+				newparams = new PostParameter[params.length + pagingParams.size()];
 				System.arraycopy(params, 0, newparams, 0, params.length);
-				System.arraycopy(arrayPagingParams, 0, newparams,
-						params.length, pagingParams.size());
+				System.arraycopy(arrayPagingParams, 0, newparams, params.length, pagingParams.size());
 			} else {
 				if (0 != arrayPagingParams.length) {
-					String encodedParams = HttpClient
-							.encodeParameters(arrayPagingParams);
+					String encodedParams = HttpClient.encodeParameters(arrayPagingParams);
 					if (-1 != url.indexOf("?")) {
 						url += "&" + encodedParams;
 					} else {
@@ -260,8 +277,7 @@ public class HttpClient implements java.io.Serializable {
 	 * 处理http deletemethod请求
 	 */
 
-	public Response delete(String url, PostParameter[] params)
-			throws WeiboException {
+	public Response delete(String url, PostParameter[] params) throws WeiboException {
 		if (0 != params.length) {
 			String encodedParams = HttpClient.encodeParameters(params);
 			if (-1 == url.indexOf("?")) {
@@ -277,17 +293,15 @@ public class HttpClient implements java.io.Serializable {
 
 	/**
 	 * 处理http post请求
-	 * 
+	 *
 	 */
 
-	public Response post(String url, PostParameter[] params)
-			throws WeiboException {
+	public Response post(String url, PostParameter[] params) throws WeiboException {
 		return post(url, params, true);
 
 	}
 
-	public Response post(String url, PostParameter[] params,
-			Boolean WithTokenHeader) throws WeiboException {
+	public Response post(String url, PostParameter[] params, Boolean WithTokenHeader) throws WeiboException {
 		log("Request:");
 		log("POST" + url);
 		PostMethod postMethod = new PostMethod(url);
@@ -305,10 +319,9 @@ public class HttpClient implements java.io.Serializable {
 
 	/**
 	 * 支持multipart方式上传图片
-	 * 
+	 *
 	 */
-	public Response multPartURL(String url, PostParameter[] params,
-			ImageItem item) throws WeiboException {
+	public Response multPartURL(String url, PostParameter[] params, ImageItem item) throws WeiboException {
 		PostMethod postMethod = new PostMethod(url);
 		try {
 			Part[] parts = null;
@@ -320,14 +333,11 @@ public class HttpClient implements java.io.Serializable {
 			if (params != null) {
 				int i = 0;
 				for (PostParameter entry : params) {
-					parts[i++] = new StringPart(entry.getName(),
-							(String) entry.getValue());
+					parts[i++] = new StringPart(entry.getName(), entry.getValue());
 				}
-				parts[parts.length - 1] = new ByteArrayPart(item.getContent(),
-						item.getName(), item.getContentType());
+				parts[parts.length - 1] = new ByteArrayPart(item.getContent(), item.getName(), item.getContentType());
 			}
-			postMethod.setRequestEntity(new MultipartRequestEntity(parts,
-					postMethod.getParams()));
+			postMethod.setRequestEntity(new MultipartRequestEntity(parts, postMethod.getParams()));
 			return httpRequest(postMethod);
 
 		} catch (Exception ex) {
@@ -335,9 +345,8 @@ public class HttpClient implements java.io.Serializable {
 		}
 	}
 
-	public Response multPartURL(String fileParamName, String url,
-			PostParameter[] params, File file, boolean authenticated)
-			throws WeiboException {
+	public Response multPartURL(String fileParamName, String url, PostParameter[] params, File file,
+			boolean authenticated) throws WeiboException {
 		PostMethod postMethod = new PostMethod(url);
 		try {
 			Part[] parts = null;
@@ -349,18 +358,15 @@ public class HttpClient implements java.io.Serializable {
 			if (params != null) {
 				int i = 0;
 				for (PostParameter entry : params) {
-					parts[i++] = new StringPart(entry.getName(),
-							(String) entry.getValue());
+					parts[i++] = new StringPart(entry.getName(), entry.getValue());
 				}
 			}
-			FilePart filePart = new FilePart(fileParamName, file.getName(),
-					file, new MimetypesFileTypeMap().getContentType(file),
-					"UTF-8");
+			FilePart filePart = new FilePart(fileParamName, file.getName(), file,
+					new MimetypesFileTypeMap().getContentType(file), "UTF-8");
 			filePart.setTransferEncoding("binary");
 			parts[parts.length - 1] = filePart;
 
-			postMethod.setRequestEntity(new MultipartRequestEntity(parts,
-					postMethod.getParams()));
+			postMethod.setRequestEntity(new MultipartRequestEntity(parts, postMethod.getParams()));
 			return httpRequest(postMethod);
 		} catch (Exception ex) {
 			throw new WeiboException(ex.getMessage(), ex, -1);
@@ -371,8 +377,7 @@ public class HttpClient implements java.io.Serializable {
 		return httpRequest(method, true);
 	}
 
-	public Response httpRequest(HttpMethod method, Boolean WithTokenHeader)
-			throws WeiboException {
+	public Response httpRequest(HttpMethod method, Boolean WithTokenHeader) throws WeiboException {
 		InetAddress ipaddr;
 		int responseCode = -1;
 		try {
@@ -384,8 +389,7 @@ public class HttpClient implements java.io.Serializable {
 				}
 				headers.add(new Header("Authorization", "OAuth2 " + token));
 				headers.add(new Header("API-RemoteIP", ipaddr.getHostAddress()));
-				client.getHostConfiguration().getParams()
-						.setParameter("http.default-headers", headers);
+				client.getHostConfiguration().getParams().setParameter("http.default-headers", headers);
 				for (Header hd : headers) {
 					log(hd.getName() + ": " + hd.getValue());
 				}
@@ -410,8 +414,7 @@ public class HttpClient implements java.io.Serializable {
 
 			{
 				try {
-					throw new WeiboException(getCause(responseCode),
-							response.asJSONObject(), method.getStatusCode());
+					throw new WeiboException(getCause(responseCode), response.asJSONObject(), method.getStatusCode());
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
@@ -436,10 +439,8 @@ public class HttpClient implements java.io.Serializable {
 				buf.append("&");
 			}
 			try {
-				buf.append(URLEncoder.encode(postParams[j].getName(), "UTF-8"))
-						.append("=")
-						.append(URLEncoder.encode(postParams[j].getValue(),
-								"UTF-8"));
+				buf.append(URLEncoder.encode(postParams[j].getName(), "UTF-8")).append("=")
+						.append(URLEncoder.encode(postParams[j].getValue(), "UTF-8"));
 			} catch (java.io.UnsupportedEncodingException neverHappen) {
 			}
 		}
@@ -450,23 +451,24 @@ public class HttpClient implements java.io.Serializable {
 		private byte[] mData;
 		private String mName;
 
-		public ByteArrayPart(byte[] data, String name, String type)
-				throws IOException {
+		public ByteArrayPart(byte[] data, String name, String type) throws IOException {
 			super(name, type, "UTF-8", "binary");
 			mName = name;
 			mData = data;
 		}
 
+		@Override
 		protected void sendData(OutputStream out) throws IOException {
 			out.write(mData);
 		}
 
+		@Override
 		protected long lengthOfData() throws IOException {
 			return mData.length;
 		}
 
-		protected void sendDispositionHeader(OutputStream out)
-				throws IOException {
+		@Override
+		protected void sendDispositionHeader(OutputStream out) throws IOException {
 			super.sendDispositionHeader(out);
 			StringBuilder buf = new StringBuilder();
 			buf.append("; filename=\"").append(mName).append("\"");
@@ -512,5 +514,5 @@ public class HttpClient implements java.io.Serializable {
 	public String getToken() {
 		return token;
 	}
-	
+
 }

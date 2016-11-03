@@ -1,30 +1,30 @@
 package weibo4j.model;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import weibo4j.http.Response;
 import weibo4j.org.json.JSONArray;
 import weibo4j.org.json.JSONException;
 import weibo4j.org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 public class Comment extends WeiboResponse implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1272011191310628589L;
-	private Date createdAt;                    //评论时间
-	private long id;                           //评论id
-	private String mid;						   //评论id
-	private String idstr;					   //评论id
-	private String text;                       //评论内容
-	private String source;                     //内容来源
-	private Comment replycomment = null;       //回复的评论内容
-	private User user = null;                  //User对象
-	private Status status = null;              //Status对象
+	private Date createdAt; // 评论时间
+	private long id; // 评论id
+	private String mid; // 评论id
+	private String idstr; // 评论id
+	private String text; // 评论内容
+	private String source; // 内容来源
+	private Comment replycomment = null; // 回复的评论内容
+	private User user = null; // User对象
+	private Status status = null; // Status对象
 
-	/*package*/public Comment(Response res) throws WeiboException {
+	/* package */public Comment(Response res) throws WeiboException {
 		super(res);
-		JSONObject json =res.asJSONObject();
+		JSONObject json = res.asJSONObject();
 		try {
 			id = json.getLong("id");
 			mid = json.getString("mid");
@@ -32,30 +32,36 @@ public class Comment extends WeiboResponse implements java.io.Serializable {
 			text = json.getString("text");
 			source = json.getString("source");
 			createdAt = parseDate(json.getString("created_at"), "EEE MMM dd HH:mm:ss z yyyy");
-			if(!json.isNull("user"))
+			if (!json.isNull("user")) {
 				user = new User(json.getJSONObject("user"));
-			if(!json.isNull("status"))
+			}
+			if (!json.isNull("status")) {
 				status = new Status(json.getJSONObject("status"));
-			if(!json.isNull("reply_comment"))
+			}
+			if (!json.isNull("reply_comment")) {
 				replycomment = (new Comment(json.getJSONObject("reply_comment")));
+			}
 		} catch (JSONException je) {
 			throw new WeiboException(je.getMessage() + ":" + json.toString(), je);
 		}
 	}
 
-	public Comment(JSONObject json)throws WeiboException, JSONException{
+	public Comment(JSONObject json) throws WeiboException, JSONException {
 		id = json.getLong("id");
 		mid = json.getString("mid");
 		idstr = json.getString("idstr");
 		text = json.getString("text");
 		source = json.getString("source");
 		createdAt = parseDate(json.getString("created_at"), "EEE MMM dd HH:mm:ss z yyyy");
-		if(!json.isNull("user"))
+		if (!json.isNull("user")) {
 			user = new User(json.getJSONObject("user"));
-		if(!json.isNull("status"))
-			status = new Status(json.getJSONObject("status"));	
-		if(!json.isNull("reply_comment"))
+		}
+		if (!json.isNull("status")) {
+			status = new Status(json.getJSONObject("status"));
+		}
+		if (!json.isNull("reply_comment")) {
 			replycomment = (new Comment(json.getJSONObject("reply_comment")));
+		}
 	}
 
 	public Comment(String str) throws WeiboException, JSONException {
@@ -68,16 +74,19 @@ public class Comment extends WeiboResponse implements java.io.Serializable {
 		text = json.getString("text");
 		source = json.getString("source");
 		createdAt = parseDate(json.getString("created_at"), "EEE MMM dd HH:mm:ss z yyyy");
-		if(!json.isNull("user"))
+		if (!json.isNull("user")) {
 			user = new User(json.getJSONObject("user"));
-		if(!json.isNull("status"))
-			status = new Status(json.getJSONObject("status"));	
-		if(!json.isNull("reply_comment"))
+		}
+		if (!json.isNull("status")) {
+			status = new Status(json.getJSONObject("status"));
+		}
+		if (!json.isNull("reply_comment")) {
 			replycomment = (new Comment(json.getJSONObject("reply_comment")));
+		}
 	}
 
 	public static CommentWapper constructWapperComments(Response res) throws WeiboException {
-		JSONObject json = res.asJSONObject(); //asJSONArray();
+		JSONObject json = res.asJSONObject(); // asJSONArray();
 		try {
 			JSONArray comments = json.getJSONArray("comments");
 			int size = comments.length();
@@ -89,11 +98,12 @@ public class Comment extends WeiboResponse implements java.io.Serializable {
 			long nextCursor = json.getLong("next_cursor");
 			long totalNumber = json.getLong("total_number");
 			String hasvisible = json.getString("hasvisible");
-			return new CommentWapper(comment, previousCursor, nextCursor,totalNumber,hasvisible);
+			return new CommentWapper(comment, previousCursor, nextCursor, totalNumber, hasvisible);
 		} catch (JSONException jsone) {
 			throw new WeiboException(jsone);
 		}
 	}
+
 	public Date getCreatedAt() {
 		return createdAt;
 	}
@@ -176,24 +186,27 @@ public class Comment extends WeiboResponse implements java.io.Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		Comment other = (Comment) obj;
-		if (id != other.id)
+		if (id != other.id) {
 			return false;
+		}
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Comment [createdAt=" + createdAt + ", id=" + id + ", mid="
-				+ mid + ", idstr=" + idstr + ", text=" + text + ", source="
-				+ source + ", replycomment=" + replycomment + ", user=" + user
-				+ ", status=" + status +"]";
+		return "Comment [createdAt=" + createdAt + ", id=" + id + ", mid=" + mid + ", idstr=" + idstr + ", text=" + text
+				+ ", source=" + source + ", replycomment=" + replycomment + ", user=" + user + ", status=" + status
+				+ "]";
 	}
 
 }

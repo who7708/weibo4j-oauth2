@@ -3,14 +3,14 @@ package weibo4j.model;
 import weibo4j.org.json.JSONException;
 import weibo4j.org.json.JSONObject;
 
-public class ApiRateLimits implements java.io.Serializable{
+public class ApiRateLimits implements java.io.Serializable {
 
 	private static final long serialVersionUID = 8550645887134692311L;
-	private String api;                 //接口
-	private int limit;                  //接口限制
-	private String limitTimeUnit;       //限制单元
-	private long remainingHits;         //剩余调用次数
-    
+	private String api; // 接口
+	private int limit; // 接口限制
+	private String limitTimeUnit; // 限制单元
+	private long remainingHits; // 剩余调用次数
+
 	ApiRateLimits(JSONObject json) throws WeiboException {
 		try {
 			api = json.getString("api");
@@ -56,10 +56,8 @@ public class ApiRateLimits implements java.io.Serializable{
 
 	@Override
 	public String toString() {
-		return "api_rate_limits [api=" + api + ", limit=" + limit
-				+ ", limitTimeUnit=" + limitTimeUnit + ", remainingHits="
-				+ remainingHits + "]";
+		return "api_rate_limits [api=" + api + ", limit=" + limit + ", limitTimeUnit=" + limitTimeUnit
+				+ ", remainingHits=" + remainingHits + "]";
 	}
-	
-	
+
 }
